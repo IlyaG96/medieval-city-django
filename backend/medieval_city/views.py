@@ -77,7 +77,8 @@ def show_city(request):
     civilians = (Civilian.objects
                  .select_related('estate')
                  .select_related('senior')
-                 .prefetch_related('vassal'))
+                 .prefetch_related('vassal')
+                 .order_by('estate'))
     estates = Estate.objects.prefetch_related('civilians')
     names = [civilian.name for civilian in civilians]
     surnames = [civilian.surname for civilian in civilians]
@@ -105,7 +106,6 @@ def show_city(request):
         civilians = civilians.filter(estate=estate)
     if by_estes:
         civilians = civilians.order_by('estate')
-
     if senior:
         civilians = civilians.filter(senior=senior)
     if without_vassals:

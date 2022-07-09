@@ -210,6 +210,7 @@ def create_relations():
         if estate == kings_estate:  # dedicated creation for the king
             king = Civilian.objects.get(estate=kings_estate)
             vassals = estates[index + 1].civilians.all()
+            king.senior = king
             for vassal in vassals:
                 vassal, created = Vassal.objects.get_or_create(
                     subordinate=vassal
