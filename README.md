@@ -44,7 +44,7 @@ docker-compose exec web python ./manage.py load_data
 ### Завершить работу docker-compose
 - Выполните команду:
 ```shell
-docker-compose -f docker-compose down -v
+docker-compose down -v
 ```
 - `-v` указывается в том случае, если необходимо удалить `volumes`.
 
