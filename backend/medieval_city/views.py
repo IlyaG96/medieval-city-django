@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from .forms import LoginForm, UserRegistrationForm
+from django.db.models import Count
 
 from .models import Civilian, City, Estate
 
@@ -68,9 +69,15 @@ def show_city(request):
     senior = request.GET.get('senior')
     without_vassals = request.GET.get('without_vassals')
     city = request.GET.get('city')
+    by_estes = request.GET.get('by_estes')
     current_city_name = ""
+    current_city_population = ""
     cities = City.objects.all()
-    civilians = Civilian.objects.select_related('estate').select_related('senior').prefetch_related('vassal')
+
+    civilians = (Civilian.objects
+                 .select_related('estate')
+                 .select_related('senior')
+                 .prefetch_related('vassal'))
     estates = Estate.objects.prefetch_related('civilians')
     names = [civilian.name for civilian in civilians]
     surnames = [civilian.surname for civilian in civilians]
@@ -78,8 +85,11 @@ def show_city(request):
     if name:
         civilians = civilians.filter(name=name)
     if city:
-        city = City.objects.prefetch_civilians().get(name=city)
+        city = (City.objects
+                .annotate(population=Count('civilians'))
+                .prefetch_civilians().get(name=city))
         current_city_name = city.name
+        current_city_population = city.population
     if surname:
         civilians = civilians.filter(surname=surname)
     if min_age:
@@ -93,6 +103,9 @@ def show_city(request):
     if estate:
         estate = Estate.objects.get(class_name=estate)
         civilians = civilians.filter(estate=estate)
+    if by_estes:
+        civilians = civilians.order_by('estate')
+
     if senior:
         civilians = civilians.filter(senior=senior)
     if without_vassals:
@@ -102,7 +115,8 @@ def show_city(request):
         request,
         template_name='city.html',
         context={
-            'title': current_city_name,
+            'current_city_population': current_city_population,
+            'current_city_name': current_city_name,
             'civilians': civilians,
             'cities': cities,
             'names': names,

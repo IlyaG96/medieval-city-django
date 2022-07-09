@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator
-from django.db.models import Prefetch
+from django.db.models import Prefetch, Count
 
 
 class CityQuerySet(models.QuerySet):

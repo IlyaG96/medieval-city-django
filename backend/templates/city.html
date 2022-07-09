@@ -34,7 +34,7 @@
                 <div class="col-sm-4">
                     <form role="form" class="panel panel-default" method="GET" action="/city">
                         <div class="panel-body">
-                            <p>Город</p>
+                            <p>Город{% if current_city_name %} население: {{ current_city_population }} человек. {% endif %}</p>
                             <div class="form-group">
                                 <select name="city" class="form-control">
                                     <option {% if city.name %} {%endif%}value="">---</option>
@@ -45,21 +45,12 @@
                             </div>
                             <p>Имя</p>
                             <div class="form-group">
-                                <select name="name" class="form-control">
-                                    <option {% if name %} {%endif%}value="">---</option>
-                                    {% for name in names %}
-                                        <option {% if name %} {%endif%}value="{{name}}">{{name}}</option>
-                                    {% endfor %}
-                                </select>
+                                <input name="name" class="form-control">
                             </div>
+
                             <p>Фамилия</p>
                             <div class="form-group">
-                                <select name="surname" class="form-control">
-                                    <option {% if surname %} {%endif%}value="">---</option>
-                                    {% for surname in surnames %}
-                                        <option {% if surname %} {%endif%}value="{{surname}}">{{surname}}</option>
-                                    {% endfor %}
-                                </select>
+                                <input name="surname" class="form-control">
                             </div>
                             <p>Сословиe</p>
                             <div class="form-group">
@@ -75,6 +66,14 @@
                                     <label>
                                         <input type="checkbox" name="without_vassals" value="1" {%if without_vassals%}checked {%endif%}>
                                         Без вассалов
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="by_estes" value="1" {%if by_estes%}checked {%endif%}>
+                                        Сортировать по сословиям
                                     </label>
                                 </div>
                             </div>
