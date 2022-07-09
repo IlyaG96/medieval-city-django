@@ -28,8 +28,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'medieval_city',
     'django_seed',
-    'debug_toolbar',
-
 ]
 
 MIDDLEWARE = [
@@ -40,7 +38,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -63,16 +60,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
+# For local development
 # DATABASES = {
-#     'default': env.dj_db_url('DATABASE_URL', 'postgres://...'),
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
 # }
+
+DATABASES = {
+    'default': env.dj_db_url('DATABASE_URL', 'postgres://...'),
+}
 
 
 # Password validation

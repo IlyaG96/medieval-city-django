@@ -68,11 +68,6 @@ class Civilian(models.Model):
     age = models.PositiveIntegerField(
         'Возраст'
     )
-    portrait = models.ImageField(
-        'Портрет',
-        blank=True,
-        null=True
-    )
     estate = models.ForeignKey(
         Estate,
         on_delete=models.PROTECT,
