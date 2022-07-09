@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import LoginForm, UserRegistrationForm
 from django.db.models import Count
 
-from .models import Civilian, City, Estate
+from .models import Civilian, City, Estate, Vassal
 
 
 def auth(request):
@@ -75,10 +75,12 @@ def show_city(request):
     cities = City.objects.all()
 
     civilians = (Civilian.objects
+                 .prefetch_related('vassals')
                  .select_related('estate')
                  .select_related('senior')
-                 .prefetch_related('vassal')
-                 .order_by('estate'))
+                 .order_by('estate')
+                 # .add_vassals()
+                 )
     estates = Estate.objects.prefetch_related('civilians')
     names = [civilian.name for civilian in civilians]
     surnames = [civilian.surname for civilian in civilians]

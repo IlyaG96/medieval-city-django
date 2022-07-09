@@ -127,9 +127,9 @@
                                                     <p class="text-right"><strong class="nowrap">Доход: {{ civilian.income|localize }} золотых</strong></p>
                                                 </div>
                                             </div>
-                                            {% if civilian.vassal.all %}
+                                            {% if civilian.vassals.all %}
                                                 <strong class="nowrap">Вассалы:</strong>
-                                                {% for vassal in civilian.subordinates %}
+                                                {% for vassal in civilian.vassals.all %}
                                                     {{ vassal }},
                                                 {% endfor %}
                                             {% else %}

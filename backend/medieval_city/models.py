@@ -108,6 +108,7 @@ class Civilian(models.Model):
         on_delete=models.CASCADE
     )
 
+
     class Meta:
         verbose_name = 'Горожанин'
         verbose_name_plural = 'Горожане'
