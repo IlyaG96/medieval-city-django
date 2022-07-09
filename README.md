@@ -31,7 +31,7 @@
 ## Запуск приложения
 - Выполните команду:
 ```shell
-docker-compose docker-compose.yaml up --build -d
+docker-compose up --build -d
 ```
 - Загрузить тестовые данные:
 
