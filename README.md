@@ -33,8 +33,12 @@
 ```shell
 docker-compose docker-compose.yaml up --build -d
 ```
+- Загрузить тестовые данные:
 
-Приложение будет доступно по адресу: [http://127.0.0.1:8000](http://127.0.0.1:1337)
+```shell
+docker-compose exec web python ./manage.py load_data
+```
+Приложение будет доступно по адресу: [http://127.0.0.1:1337](http://127.0.0.1:1337)
 
 
 ### Завершить работу docker-compose
@@ -42,7 +46,6 @@ docker-compose docker-compose.yaml up --build -d
 ```shell
 docker-compose -f docker-compose down -v
 ```
-- На месте `*` - название выбранного docker-compose.    
 - `-v` указывается в том случае, если необходимо удалить `volumes`.
 
 ### Возможен запуск без использования Docker.
