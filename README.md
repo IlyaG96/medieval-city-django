@@ -1,12 +1,16 @@
-# Проект-пример Django-docker-example
+# Проект Medieval City (Django)
 
 ## Что умеет приложение? 
 
-Приложение обладает простейшим интерфейсом для загрузки файлов в базу данных.
-Для запуска следуйте одной из инструкций, указанных ниже.
+Приложение состоит из нескольких составляющих:
+- Главная страница - резюме.
+- Страницы регистрации и логинизации.
+- Страница с иерархией базы данных населения средневекового города (только для авторизированных пользователей).
+- Страница редактирования информации о жителе города. (только для авторизированных пользователей).
+- Админка (только для персонала и суперпользователей).
 
-## Как запустить?
-Создайте в директории django-example-docker одну обязательную и две необязательных переменных окружения:
+## Требования
+Создайте в директории medieval-city-django две переменных окружения:
 1) `.env` - обязательная.
 
 - `DEBUG`= настройка Django для включения отладочного режима. Принимает значения `TRUE` или `FALSE`. [Документация Django](https://docs.djangoproject.com/en/3.2/ref/settings/#std:setting-DEBUG).
@@ -14,51 +18,62 @@
 - `ALLOWED_HOSTS`= настройка Django со списком разрешённых адресов. Если запрос прилетит на другой адрес, то сайт ответит ошибкой 400. Можно перечислить несколько адресов через запятую, например `127.0.0.1,192.168.0.1,site.test`. [Документация Django](https://docs.djangoproject.com/en/3.2/ref/settings/#allowed-hosts).
 - `DATABASE_URL`= адрес для подключения к базе данных PostgreSQL. Другие СУБД сайт не поддерживает. [Формат записи](https://github.com/jacobian/dj-database-url#url-schema).
 - `CSRF_COOKIE_DOMAIN`= `http://127.0.0.1:1337`, `http://mydomain.ru`, `https://mydomain.ru` [Документация](https://docs.djangoproject.com/en/4.0/ref/settings/#csrf-cookie-domain).
-- `CSRF_TRUSTED_ORIGINS`= `http://127.0.0.1:1337`, `http://mydomain.ru`, `https://mydomain.ru` [Документация](https://docs.djangoproject.com/en/4.0/ref/settings/#csrf-trusted-origins).
-- `VIRTUAL_HOST`= `http://mydomain.ru` - настройка для prod версии.
-- `VIRTUAL_PORT`= `8000` - настройка для prod версии.
-- `LETSENCRYPT_HOST`= `http://mydomain.ru` - настройка для prod версии.
+- `CSRF_TRUSTED_ORIGINS`= `127.0.0.1:1337`, `mydomain.ru`, [Документация](https://docs.djangoproject.com/en/4.0/ref/settings/#csrf-trusted-origins).
 
-#### ВАЖНО! В переменной `DATABASE_URL` вместо localhost используйте `host.docker.internal` если необходимо подключиться к postgres на локальном сервере.
 
-2) `.env.db` - необязательная.
+2) `.env.db` - обязательная.
 
 - `POSTGRES_USER`=`psql_user` - если БД должна находиться в контейнере.
 - `POSTGRES_PASSWORD`=`psql_pass` - если БД должна находиться в контейнере.
 - `POSTGRES_DB`=`psql_db_name` - если БД должна находиться в контейнере.
 
-3) `.env.proxy-companion` - необязательная.
 
-- `DEFAULT_EMAIL`= `your_email@mail.com` - настройка для prod версии. На этот адрес будут приходить уведомления от [letsencrypt.org](https://letsencrypt.org)
-- `ACME_CA_URI`= `https://acme-staging-v02.api.letsencrypt.org/directory` - настройка для prod версии.
-- `NGINX_PROXY_CONTAINER`= `nginx-proxy` - настройка для prod версии. Название вашего nginx-proxy контейнер из docker-compose.prod.yaml.
+## Запуск приложения
+- Выполните команду:
+```shell
+docker-compose docker-compose.yaml up --build -d
+```
+
+Приложение будет доступно по адресу: [http://127.0.0.1:8000](http://127.0.0.1:1337)
 
 
-### Docker-compose для локального сервера
-- Выполните команду:
-```shell
-docker-compose -f docker-compose.dev.yaml up --build -d
-```
-### Docker-compose для локального сервера с psql на localhost
-- Выполните команду:
-```shell
-docker-compose -f docker-compose.local-psql.yaml up --build -d
-```
-### Docker-compose для dev сервера
-- Выполните команду:
-```shell
-docker-compose -f docker-compose.prod.yaml up --build -d
-```
-### Docker-compose для dev сервера с psql на localhost
-- Выполните команду:
-```shell
-docker-compose -f docker-compose.prod.local-psql.yaml up --build -d
-```
 ### Завершить работу docker-compose
 - Выполните команду:
 ```shell
-docker-compose -f docker-compose* down -v
+docker-compose -f docker-compose down -v
 ```
 - На месте `*` - название выбранного docker-compose.    
 - `-v` указывается в том случае, если необходимо удалить `volumes`.
 
+### Возможен запуск без использования Docker.
+
+1) Создайте директорию с виртуальным окружением python3.8-3.11 в `директории medieval-city-django`.
+2) Активируйте виртуальное окружение, установите все необходимые зависимости.
+3) В переменной окружения .env установите режим `DEBUG`=`False`.
+4) Последовательно выполните команды:
+```shell
+python3 manage.py migrate
+```
+```shell
+python3 manage.py load_data
+```
+```shell
+python3 manage.py runserver
+```
+
+Для очистки базы от тестовых данных выполните команду:
+```shell
+python3 manage.py flush
+```
+Приложение будет доступно по адресу: [http://127.0.0.1:8000](http://127.0.0.1:8000)
+
+## Issues 
+
+Можно улучшить:
+
+- Высушить код, исправить его в соотв. с требованиями pep-8 и django best practices.
+- Оптимизация скрипта загрузки данных в БД (DRY, annotate и т.д)
+- Использование DRF для сериализации данных. Сейчас можно передать неверные параметры в GET запрос и приложение "сломается".
+- Переезд на реактивный фронтенд + использование AJAX.
+- Спроектировать Масштабируемую структуру БД, которая будет учитывать все возможные требования к проекту.
+- Оптимизировать и кастомизировать админ-панель для CRUD операций.
