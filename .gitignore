@@ -1,0 +1,7 @@
+.idea
+__pycache__
+.env
+.env.db
+env
+.env.proxy-companion
+db.sqlite3

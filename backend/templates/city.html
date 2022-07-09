@@ -1,0 +1,167 @@
+{% load l10n %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Население">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>Население</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+</head>
+
+<body style="background-color: ghostwhite;">
+
+<nav class="navbar" style="background-color: ghostwhite;">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" style="color:black;" href="{% url 'index' %}">На главную</a>
+            <a class="navbar-brand" style="color:black;" href="{% url 'logout' %}">Выйти</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-sm-4">
+                    <form role="form" class="panel panel-default" method="GET" action="/city">
+                        <div class="panel-body">
+                            <p>Город</p>
+                            <div class="form-group">
+                                <select name="city" class="form-control">
+                                    <option {% if city.name %} {%endif%}value="">---</option>
+                                    {% for city in cities %}
+                                        <option {% if city.name %} {%endif%}value="{{city.name}}">{{city.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <p>Имя</p>
+                            <div class="form-group">
+                                <select name="name" class="form-control">
+                                    <option {% if name %} {%endif%}value="">---</option>
+                                    {% for name in names %}
+                                        <option {% if name %} {%endif%}value="{{name}}">{{name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <p>Фамилия</p>
+                            <div class="form-group">
+                                <select name="surname" class="form-control">
+                                    <option {% if surname %} {%endif%}value="">---</option>
+                                    {% for surname in surnames %}
+                                        <option {% if surname %} {%endif%}value="{{surname}}">{{surname}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <p>Сословиe</p>
+                            <div class="form-group">
+                                <select name="estate" class="form-control">
+                                    <option {% if estate %} {%endif%}value="">---</option>
+                                    {% for estate in estates %}
+                                        <option {% if estate %} {%endif%}value="{{estate}}">{{estate}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group ">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="without_vassals" value="1" {%if without_vassals%}checked {%endif%}>
+                                        Без вассалов
+                                    </label>
+                                </div>
+                            </div>
+                            <p><strong>Доход</strong></p>
+                            <div class="form-group ">
+                                <div class="input-group">
+                                    <span class="input-group-addon">от</span>
+                                    <input autocomplete="off" type="text" value="{%if min_price %}{{min_price}}{%endif%}" name="min_income" class="form-control js-price-format" placeholder="любой">
+                                    <span class="input-group-addon">золотых</span>
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <div class="input-group">
+                                    <span class="input-group-addon">до</span>
+                                    <input autocomplete="off" type="text" value="{%if max_price %}{{max_price}}{%endif%}" name="max_income" class="form-control js-price-format" placeholder="любой">
+                                    <span class="input-group-addon">золотых</span>
+                                </div>
+                            </div>
+                            <p><strong>Возраст</strong></p>
+                            <div class="form-group ">
+                                <div class="input-group">
+                                    <span class="input-group-addon">до</span>
+                                    <input autocomplete="off" type="text" value="{%if max_price %}{{max_price}}{%endif%}" name="min_age" class="form-control js-price-format" placeholder="любой">
+                                    <span class="input-group-addon">лет</span>
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <div class="input-group">
+                                    <span class="input-group-addon">до</span>
+                                    <input autocomplete="off" type="text" value="{%if max_price %}{{max_price}}{%endif%}" name="max_age" class="form-control js-price-format" placeholder="любой">
+                                    <span class="input-group-addon">лет</span>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success" style="margin-top:15px; margin-bottom:25px;">Показать</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-sm-8">
+                    <div class="panel panel-default">
+                        {% for civilian in civilians %}
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div>
+                                            <div class="row">
+                                                <div class="col-sm-7">
+                                                    <p><strong>Гражданин {{ civilian.name }} {{ civilian.surname }}, {{ civilian.estate }}</strong></p>
+                                                    <a href={% url 'civilian' civilian_id=civilian.id %}>Редактировать</a>
+                                                </div>
+                                                <div class="col-sm-5">
+                                                    <p class="text-right"><strong class="nowrap">Доход: {{ civilian.income|localize }} золотых</strong></p>
+                                                </div>
+                                            </div>
+                                            {% if civilian.vassal.all %}
+                                                <strong class="nowrap">Вассалы:</strong>
+                                                {% for vassal in civilian.vassal.all %}
+                                                    {{ vassal }},
+                                                {% endfor %}
+                                            {% else %}
+                                            {% endif %}
+                                            <div class="row">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <p>
+                                            <span class="label label-success">Подчиняется: {{ civilian.senior }}</span>
+                                            <span class="label label-primary">Возраст: {{ civilian.age }} лет</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if not foloop.last %}
+                                <hr style="margin:0">
+                            {% endif %}
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer style="height:200px;background-color: ghostwhite;">
+</footer>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</body>
+</html>

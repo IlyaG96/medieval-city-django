@@ -1,0 +1,142 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title> Python Web Developer | Илья Габдрахманов </title>
+    <link rel="shortcut icon" href="{% static 'images/profile.jpeg' %}">
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fontawsom-all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+
+<body>
+
+    <div class="container-fluid overcover">
+        <div class="container profile-box">
+            <div class="row">
+                <div class="col-md-4 left-co">
+                    <br>
+                        <li>
+                            <a class="btn rit-titl "  style="background-color:transparent" href="{% url 'show_city' %}">      Перейти на страницу иерархии БД</a>
+                        </li>
+                        <br>
+
+                    <div class="left-side">
+                        <div class="profile-info">
+                            <img src="{% static 'images/profile.jpeg' %}" alt="">
+                            <h3>Илья Габдрахманов</h3>
+                            <span>Python Web Developer</span>
+                        </div>
+
+                        <h4 class="ltitle">Контакты</h4>
+                        <div class="contact-box pb0">
+                            <div class="icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="detail">
+                                +7 987 060 8786 <br>
+                            </div>
+                        </div>
+
+                        <div class="contact-box pb0">
+                            <div class="icon">
+                                <i class="fas fa-globe-americas"></i>
+                            </div>
+                            <div class="detail">
+                                viktoryisnear@gmail.com <br>
+                            </div>
+                        </div>
+                        <div class="contact-box">
+                            <div class="icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="detail">
+                                Доступен по всей России :)
+                            </div>
+                        </div>
+                        <h4 class="ltitle">Увлечения</h4>
+                        <ul class="hoby row no-margin">
+                            <li><i class="fas fa-pencil-alt"></i> <br> Фото</li>
+                            <li><i class="fas fa-bicycle"></i> <br> Спорт</li>
+                            <li><i class="fas fa-music"></i> <br> Музыка</li>
+                            <li><i class="fas fa-film"></i><br> Фильмы</li>
+                            <li><i class="fas fa-plane-departure"></i> <br> Туризм</li>
+                            <li><i class="fas fa-gamepad"></i> <br> Игры</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-8 rt-div">
+                    <div class="rit-cover">
+                        <div class="hotkey">
+                            <h1 class="">Илья Габдрахманов</h1>
+                            <small>Python Web Developer</small>
+                        </div>
+                        <h2 class="rit-titl"><i class="far fa-user"></i> Что я умею?</h2>
+                        <div class="about">
+                            <ul>
+                            <li><i class="far fa-hand-point-right"></i> Рефакторинг кода и код-ревью.</li>
+                            <li><i class="far fa-hand-point-right"></i> Проектирование архитектуры БД и разработка Django-приложений с нуля.</li>
+                            <li><i class="far fa-hand-point-right"></i> Разработка сложных телеграм-ботов, реализация фич, работа с заказчиком.</li>
+                            <li><i class="far fa-hand-point-right"></i> Написание технических заданий, технической документации.</li>
+                            <li><i class="far fa-hand-point-right"></i> Деплой, контейнеризация, администрирование сетевой инфраструктуры.</li>
+                             </ul>
+
+                            <div class="btn-ro row no-margin">
+                                <ul class="btn-link">
+                                    <li>
+                                        <a href="https://t.me/ivve_g"><i class="fas fa-paper-plane"></i> Напишите мне</a>
+                                    </li>
+                                    <li>
+                                        <a href=""><i class="fas fa-cloud-download-alt"></i> Скачать резюме</a>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+
+                        <h2 class="rit-titl"><i class="fas fa-briefcase"></i> Опыт работы</h2>
+                        <div class="work-exp">
+                            <h6>Backed Python Web Developer<span>04.2022-Н.В</span></h6>
+                            <i>Россия / Devman</i>
+                            <ul>
+                                <li><i class="far fa-hand-point-right"></i> Backed Python Web Developer</li>
+                            </ul>
+                        </div>
+                        <div class="work-exp">
+                            <h6>Системный администратор<span>2020.09 - 2022.05</span></h6>
+                            <i>Россия / МБОУ "СОШ в пос. Усть-Омчуг"</i>
+                            <ul>
+                                <li><i class="far fa-hand-point-right"></i> Системный администратор </li>
+                            </ul>
+                        </div>
+                        <div class="work-exp">
+                            <h6>Педагог дополнительного образования<span>2020.08 - 2022.05</span></h6>
+                            <i>Россия / МБОУ "СОШ в пос. Усть-Омчуг"</i>
+                            <ul>
+                                <li><i class="far fa-hand-point-right"></i> Наставник центра "Точка роста" по направлению "Программирование на Python"</li>
+
+                            </ul>
+                        </div>
+                        <h2 class="rit-titl"><i class="fas fa-graduation-cap"></i> Образование</h2>
+                        <div class="education">
+                            <ul class="row no-margin">
+                                <li class="col-md-6"><span>2014-2018</span> <br>
+                                    Бакалавр - КНИТУ ФНН</li>
+                                <li class="col-md-6"><span>2018-2020</span> <br>
+                                    Магистр - КНИТУ ФХТПМК</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+</html>
