@@ -1,5 +1,16 @@
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.db.models import Prefetch
+
+
+class CityQuerySet(models.QuerySet):
+    def prefetch_civilians(self):
+        civilians = Prefetch(
+            'civilians',
+            queryset=Civilian.objects.all()
+        )
+
+        return self.prefetch_related(civilians)
 
 
 class City(models.Model):
@@ -7,6 +18,8 @@ class City(models.Model):
         'Название города',
         max_length=100,
     )
+
+    objects = CityQuerySet.as_manager()
 
     class Meta:
         verbose_name = 'Город'
@@ -101,4 +114,3 @@ class Civilian(models.Model):
 
     def __str__(self):
         return f'{self.name} {self.surname}'
-

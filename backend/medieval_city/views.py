@@ -58,7 +58,6 @@ def show_city(request):
     if not request.user.is_authenticated:
         return redirect('/auth/')
 
-    # TODO use select/prefetch related etc.
     name = request.GET.get('name')
     surname = request.GET.get('surname')
     min_age = request.GET.get('min_age')
@@ -69,19 +68,18 @@ def show_city(request):
     senior = request.GET.get('senior')
     without_vassals = request.GET.get('without_vassals')
     city = request.GET.get('city')
-    current_city = ""
+    current_city_name = ""
     cities = City.objects.all()
-    civilians = Civilian.objects.all()
-    estates = Estate.objects.all()
+    civilians = Civilian.objects.select_related('estate').select_related('senior').prefetch_related('vassal')
+    estates = Estate.objects.prefetch_related('civilians')
     names = [civilian.name for civilian in civilians]
     surnames = [civilian.surname for civilian in civilians]
 
     if name:
         civilians = civilians.filter(name=name)
     if city:
-        city = City.objects.get(name=city)
-        current_city = city.name
-        civilians = civilians.filter(city=city)
+        city = City.objects.prefetch_civilians().get(name=city)
+        current_city_name = city.name
     if surname:
         civilians = civilians.filter(surname=surname)
     if min_age:
@@ -104,7 +102,7 @@ def show_city(request):
         request,
         template_name='city.html',
         context={
-            'title': current_city,
+            'title': current_city_name,
             'civilians': civilians,
             'cities': cities,
             'names': names,

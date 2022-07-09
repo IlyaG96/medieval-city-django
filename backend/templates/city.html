@@ -130,7 +130,7 @@
                                             </div>
                                             {% if civilian.vassal.all %}
                                                 <strong class="nowrap">Вассалы:</strong>
-                                                {% for vassal in civilian.vassal.all %}
+                                                {% for vassal in civilian.subordinates %}
                                                     {{ vassal }},
                                                 {% endfor %}
                                             {% else %}
