@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import LoginForm, UserRegistrationForm
 from django.db.models import Count
 from django.db import transaction
+from django.contrib.auth.decorators import login_required
 
 from .models import Civilian, City, Estate
 from .forms import CivilianForm
@@ -61,6 +62,7 @@ def index(request):
     )
 
 
+@login_required(login_url='/auth/')
 def show_city(request):
     if not request.user.is_authenticated:
         return redirect('/auth/')
@@ -129,6 +131,7 @@ def show_city(request):
 
 
 @transaction.atomic
+@login_required(login_url='/auth/')
 def view_civilian(request, civilian_id):
     if not request.user.is_authenticated:
         return redirect('/auth/')
