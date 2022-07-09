@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from .models import Civilian
 
 
 class LoginForm(forms.Form):
@@ -16,7 +17,14 @@ class UserRegistrationForm(forms.ModelForm):
         fields = ('username', 'first_name', 'email')
 
     def clean_password2(self):
-        cd = self.cleaned_data
-        if cd['password'] != cd['password2']:
+        clean_data = self.cleaned_data
+        if clean_data['password'] != clean_data['password2']:
             raise forms.ValidationError('Пароли не совпадают!')
-        return cd['password2']
+        return clean_data['password2']
+
+
+# TODO optimize me, plz
+class CivilianForm(forms.ModelForm):
+    class Meta:
+        model = Civilian
+        fields = '__all__'  # TODO newer do things like this

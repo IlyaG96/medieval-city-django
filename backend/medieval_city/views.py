@@ -1,10 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from .forms import LoginForm, UserRegistrationForm
 from django.db.models import Count
+from django.db import transaction
 
-from .models import Civilian, City, Estate, Vassal
-
+from .models import Civilian, City, Estate
+from .forms import CivilianForm
 
 def auth(request):
     if request.method == 'POST':
@@ -19,13 +20,14 @@ def auth(request):
                 else:
                     return redirect('/auth/')
             else:
-                return redirect('/city/')
+                return redirect('/auth/')
     else:
         form = LoginForm()
 
     return render(request,
                   template_name='auth.html',
-                  context={'form': form})
+                  context={'form': form}
+                  )
 
 
 def user_logout(request):
@@ -45,7 +47,10 @@ def register(request):
             return redirect('/auth/')
     else:
         user_form = UserRegistrationForm()
-    return render(request, 'register.html', {'user_form': user_form})
+    return render(request,
+                  template_name='register.html',
+                  context={'user_form': user_form}
+                  )
 
 
 def index(request):
@@ -79,11 +84,8 @@ def show_city(request):
                  .select_related('estate')
                  .select_related('senior')
                  .order_by('estate')
-                 # .add_vassals()
                  )
     estates = Estate.objects.prefetch_related('civilians')
-    names = [civilian.name for civilian in civilians]
-    surnames = [civilian.surname for civilian in civilians]
 
     if name:
         civilians = civilians.filter(name=name)
@@ -121,18 +123,42 @@ def show_city(request):
             'current_city_name': current_city_name,
             'civilians': civilians,
             'cities': cities,
-            'names': names,
-            'surnames': surnames,
             'estates': estates,
         })
 
 
+@transaction.atomic
 def view_civilian(request, civilian_id):
-    current_civilian = Civilian.objects.get(id=civilian_id)
+    if not request.user.is_authenticated:
+        return redirect('/auth/')
+
+    # TODO need to use DRF
+
+    civilian = get_object_or_404((Civilian.objects
+                                  .prefetch_related('vassals')
+                                  .select_related('estate')
+                                  .select_related('senior')
+                                  ), id=civilian_id)
+
+    if request.method == 'POST':
+        form = CivilianForm(request.POST, instance=civilian)
+        if form.is_valid():
+            form.save()
+
+        return render(
+            request,
+            template_name='civilian.html',
+            context={
+                'form': form,
+                'civilian': civilian,
+            })
+
+    form = CivilianForm(instance=civilian)
 
     return render(
         request,
         template_name='civilian.html',
         context={
-            'civilian': current_civilian,
+            'form': form,
+            'civilian': civilian,
         })
