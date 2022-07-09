@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator
-from django.db.models import Prefetch, Count
+from django.db.models import Prefetch
 
 
 class CityQuerySet(models.QuerySet):
@@ -107,7 +107,6 @@ class Civilian(models.Model):
         related_name='civilians',
         on_delete=models.CASCADE
     )
-
 
     class Meta:
         verbose_name = 'Горожанин'

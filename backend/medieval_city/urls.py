@@ -10,5 +10,3 @@ urlpatterns = [
     path('civilian/<int:civilian_id>/', views.view_civilian, name='civilian'),
 
 ]
-
-

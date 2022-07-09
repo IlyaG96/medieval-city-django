@@ -12,6 +12,7 @@ class CivilianPage(admin.ModelAdmin):
 class EstatePage(admin.ModelAdmin):
     pass
 
+
 @admin.register(Vassal)
 class VassalPage(admin.ModelAdmin):
     pass

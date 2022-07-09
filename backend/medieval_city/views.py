@@ -7,6 +7,7 @@ from django.db import transaction
 from .models import Civilian, City, Estate
 from .forms import CivilianForm
 
+
 def auth(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
