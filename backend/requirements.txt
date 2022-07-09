@@ -5,4 +5,3 @@ psycopg2-binary==2.9.1
 dj-database-url==0.5.0
 more-itertools==8.13.0
 django-seed==0.3.1
-Pillow==9.2.0
