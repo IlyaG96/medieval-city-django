@@ -13,8 +13,8 @@ def auth(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
-            cd = form.cleaned_data
-            user = authenticate(username=cd['username'], password=cd['password'])
+            clean_data = form.cleaned_data
+            user = authenticate(username=clean_data['username'], password=clean_data['password'])
             if user is not None:
                 if user.is_active:
                     login(request, user)
