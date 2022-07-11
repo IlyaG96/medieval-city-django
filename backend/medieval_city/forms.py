@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Civilian
+from .models import Civilian, City
 
 
 class LoginForm(forms.Form):
@@ -23,8 +23,25 @@ class UserRegistrationForm(forms.ModelForm):
         return clean_data['password2']
 
 
-# TODO optimize me, plz
 class CivilianForm(forms.ModelForm):
+
     class Meta:
         model = Civilian
-        fields = '__all__'  # TODO newer do things like this
+        fields = ['name',
+                  'surname',
+                  'age',
+                  'estate',
+                  'senior',
+                  'income',
+                  'city',
+                  'vassal']
+
+    vassal = forms.ModelMultipleChoiceField(
+        queryset=Civilian.objects.all(),
+        widget=forms.CheckboxSelectMultiple
+    )
+
+    city = forms.ModelMultipleChoiceField(
+        queryset=City.objects.all(),
+        widget=forms.Select
+    )
