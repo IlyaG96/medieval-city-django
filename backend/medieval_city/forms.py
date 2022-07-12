@@ -40,7 +40,6 @@ class CivilianForm(forms.ModelForm):
         queryset=Civilian.objects.all(),
         widget=forms.CheckboxSelectMultiple(),
         label='Вассалы'
-
     )
 
     city = forms.ModelMultipleChoiceField(

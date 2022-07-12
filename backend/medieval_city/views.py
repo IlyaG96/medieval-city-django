@@ -4,6 +4,7 @@ from .forms import LoginForm, UserRegistrationForm
 from django.db.models import Count
 from django.db import transaction
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse_lazy
 
 from .models import Civilian, City, Estate
 from .forms import CivilianForm
@@ -14,15 +15,16 @@ def auth(request):
         form = LoginForm(request.POST)
         if form.is_valid():
             clean_data = form.cleaned_data
-            user = authenticate(username=clean_data['username'], password=clean_data['password'])
-            if user is not None:
+            user = authenticate(username=clean_data['username'],
+                                password=clean_data['password'])
+            if user:
                 if user.is_active:
                     login(request, user)
-                    return redirect('/city/')
+                    return redirect('show_city')
                 else:
-                    return redirect('/auth/')
+                    return redirect('auth')
             else:
-                return redirect('/auth/')
+                return redirect('auth')
     else:
         form = LoginForm()
 
@@ -46,7 +48,7 @@ def register(request):
             new_user = user_form.save(commit=False)
             new_user.set_password(user_form.cleaned_data['password'])
             new_user.save()
-            return redirect('/auth/')
+            return redirect('auth')
     else:
         user_form = UserRegistrationForm()
     return render(request,
@@ -62,10 +64,8 @@ def index(request):
     )
 
 
-@login_required(login_url='/auth/')
+@login_required(login_url=reverse_lazy('auth'))
 def show_city(request):
-    if not request.user.is_authenticated:
-        return redirect('/auth/')
 
     name = request.GET.get('name')
     surname = request.GET.get('surname')
@@ -131,10 +131,8 @@ def show_city(request):
 
 
 @transaction.atomic
-@login_required(login_url='/auth/')
+@login_required(login_url=reverse_lazy('auth'))
 def view_civilian(request, civilian_id):
-    if not request.user.is_authenticated:
-        return redirect('/auth/')
 
     # TODO need to use DRF
 
